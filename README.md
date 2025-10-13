@@ -57,7 +57,7 @@ pip install -r requirements.txt
 
 ### 2️⃣ Launch the FastAPI backend
 ```bash
-uvicorn backend.main:app --reload
+uvicorn main:app --reload
 ```
 Then open http://127.0.0.1:8000 to explore the API.
 
