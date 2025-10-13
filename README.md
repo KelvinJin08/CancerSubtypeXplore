@@ -45,7 +45,7 @@ CancerSubtypeXplore/
 │
 ├── requirements.txt                 # Python dependencies
 └── README.md                        # Project documentation
-
+```
 ---
 
 ## 🚀 Quick Start
