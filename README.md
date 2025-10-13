@@ -53,6 +53,7 @@ CancerSubtypeXplore/
 ### 1️⃣ Install dependencies
 ```bash
 pip install -r requirements.txt
+pip install torch --index-url https://download.pytorch.org/whl/cpu
 ```
 
 ### 2️⃣ Launch the FastAPI backend
