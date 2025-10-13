@@ -1,7 +1,7 @@
 # CancerSubtypeXplore
 A Modular Platform for Multi-Omics Cancer Subtype Prediction and Biomarker Consensus Discovery
 
----
+
 
 ## 🧩 Overview
 
@@ -14,7 +14,7 @@ The system is composed of four functional modules:
 3. **DIY Deep Learning Module** – Interactive interface for designing and training custom neural networks without coding.  
 4. **Biomarker Analysis Module** – Extraction and cross-model comparison of top-ranked biomarkers to identify robust pan-cancer signatures.  
 
----
+
 
 ## 📊 System Architecture
 
@@ -22,10 +22,11 @@ The system is composed of four functional modules:
 **Figure:** Overview of the CancerSubtypeXplore framework.  
 The platform integrates standardized multi-omics datasets, machine learning benchmarking, customizable deep learning, and cross-model biomarker analysis.
 
----
+
 
 ## 📂 Repository Structure
 
+```
 CancerSubtypeXplore/
 ├── data/
 │   ├── dataset_for_pretrain/        # Multi-omics datasets for model pretraining (TCGA projects)
@@ -42,7 +43,6 @@ CancerSubtypeXplore/
 ├── make_ensembl_to_symbol.py        # Utility script for converting Ensembl IDs to gene symbols
 ├── models_nn.py                     # Neural network architecture definitions (DIY deep learning module)
 │
-├── readme.txt                       # Local readme (optional, legacy)
 ├── requirements.txt                 # Python dependencies
 └── README.md                        # Project documentation
 
