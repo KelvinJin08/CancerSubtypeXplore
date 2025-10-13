@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Multi-Omics Cancer Subtyping — Dataset & ML Runner</title>
+  <link rel="stylesheet" href="./style.css" />
+  <!-- Plotly for charts -->
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <h1>Multi-Omics Cancer Subtyping Tool</h1>
+  </div>
+</header>
+
+<main class="container">
+  <!-- Part 1 -->
+  <section class="card">
+    <h2 class="section-title">Part 1 · Dataset Overview (TCGA multi-omics, preprocessed & dimension-reduced)</h2>
+    <h2 class="section-title">Data source and curation</h2>
+    <p class="section-subtitle">
+      All datasets are curated from the
+      <a href="https://portal.gdc.cancer.gov/" target="_blank" rel="noopener">TCGA / GDC Portal</a>.
+      Raw omics (mRNA, DNA methylation, and miRNA) were uniformly preprocessed and
+      dimension-reduced to fixed feature sizes.
+    </p>
+    <ul>
+      <li>Feature dimensions after reduction: <strong>mRNA = 1000</strong>, <strong>DNA-meth = 1000</strong>, <strong>miRNA = 500</strong>.</li>
+      <li>Each TCGA project folder contains split matrices (<code>_tr.csv</code>, <code>_te.csv</code>) and label files, plus a <code>README.md</code> documenting subtype definitions and counts.</li>
+    </ul>
+
+    <div class="grid cols-2">
+      <div class="callout">
+        <h3>Folder structure (example)</h3>
+        <pre>../&lt;TCGA-PROJECT&gt;/
+├─ 1_tr.csv         # mRNA train matrix (samples × features)
+├─ 1_te.csv         # mRNA val/test matrix
+├─ 1_featname.csv   # mRNA feature names
+├─ 2_tr.csv         # DNA-meth train
+├─ 2_te.csv
+├─ 2_featname.csv
+├─ 3_tr.csv         # miRNA train
+├─ 3_te.csv
+├─ 3_featname.csv
+├─ labels_tr.csv
+├─ labels_te.csv
+└─ README.md        # subtype mapping, stats, original TCGA references</pre>
+      </div>
+
+      <div class="callout">
+        <h3>Naming convention</h3>
+        <ul>
+          <li><code>1_* = mRNA</code>, <code>2_* = DNA-meth</code>, <code>3_* = miRNA</code></li>
+          <li><code>_tr.csv</code>/<code>_te.csv</code>: train / validation (or test) matrices</li>
+          <li><code>_featname.csv</code>: feature names after reduction</li>
+          <li><code>labels_tr.csv</code>/<code>labels_te.csv</code>: sample labels</li>
+          <li><code>README.md</code>: subtype definitions, counts, and data provenance</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="banner">
+    <p>Unified feature sizes (after reduction): <strong>mRNA 1000</strong> · <strong>DNA-meth 1000</strong> · <strong>miRNA 500</strong></p>
+  </section>
+
+  <!-- Part 1: Curated table -->
+  <section class="card">
+    <h2 class="section-title">Curated TCGA projects</h2>
+    <p class="section-subtitle">
+      The table below lists curated projects. Folders are shown as relative notation (e.g.,
+      <code>../TCGA-COAD/</code>) without exposing local machine paths.
+    </p>
+    <div id="datasetTable"></div>
+  </section>
+
+  <!-- Part 2 -->
+  <section class="card">
+    <h2 class="section-title">Part 2 · Machine Learning Runner</h2>
+    <p class="section-subtitle">
+      Select a dataset root and project, pick models and omics combinations, then run and view metrics
+      (accuracy, F1-weighted, F1-macro).
+    </p>
+
+    <div class="grid cols-2" style="margin-bottom:10px">
+      <div class="callout">
+        <h3>Dataset & Models</h3>
+        <div class="kv">
+          <dt>Dataset root</dt>
+          <dd><select id="ds-root"></select></dd>
+
+          <dt>Project</dt>
+          <dd><select id="project"></select></dd>
+
+          <dt>Models</dt>
+          <dd id="model-box"></dd>
+        </div>
+      </div>
+
+      <div class="callout">
+        <h3>Omics combinations</h3>
+        <div id="omics-box" class="subtypes" style="margin-bottom:10px"></div>
+        <button class="btn" id="btn-select-common">Select common combos</button>
+        <button class="btn" id="btn-clear-combos">Clear</button>
+      </div>
+    </div>
+
+    <button id="btn-run" type="button" class="btn"
+      style="font-size:16px;font-weight:700;background:#fff;color:#111827;border:2px solid #e5e7eb;padding:8px 16px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.15);">
+      Run ML
+    </button>
+
+
+    <span id="run-status" style="margin-left:8px;color:#9fb0c0"></span>
+
+    <!-- Table -->
+    <div id="ml-results" style="margin-top:16px"></div>
+
+    <!-- Only scatter -->
+    <div id="ml-charts" class="charts">
+      <div class="chart-card">
+        <div class="chart-toolbar">
+          <strong>ACC vs F1-macro</strong>
+          <span class="spacer"></span>
+          <span class="hint">colored by model</span>
+        </div>
+        <div id="chart-scatter"></div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Part 3: Design your deep learning model -->
+  <section class="card" id="part3">
+  <h2>Part 3 · Design your deep learning model</h2>
+  <p class="muted">Pick a model type and set parameters, then start training.</p>
+
+  <div class="grid cols-2">
+    <label class="field">
+      <div class="label">Model type</div>
+      <select id="dl-kind">
+        <option value="linear">Simple linear (baseline)</option>
+        <option value="simple_mlp">Simple neural network (MLP)</option>
+        <option value="attention">Attention model</option>
+      </select>
+    </label>
+
+    <label class="field">
+      <div class="label">Dataset (synced with Part 2)</div>
+      <select id="dl-dataset"></select>
+      <small class="muted">Changing here also updates Part 2 “Project”.</small>
+    </label>
+
+    <label class="field">
+      <div class="label">Run name</div>
+      <input id="dl-name" placeholder="MyDLRun" value="MyDLRun" />
+    </label>
+
+
+
+  </div>
+
+  <!-- MLP panel -->
+  <div id="dl-panel-mlp" class="grid cols-2">
+    <label class="field">
+      <div class="label">Hidden layers (comma-separated)</div>
+      <input id="dl-mlp-hidden" value="256,128,64" />
+    </label>
+    <label class="field">
+      <div class="label">Dropout</div>
+      <input id="dl-mlp-dropout" type="number" step="0.05" value="0.2" />
+    </label>
+    <label class="field">
+      <div class="label">Activation</div>
+      <select id="dl-mlp-act">
+        <option value="relu">ReLU</option>
+        <option value="gelu">GELU</option>
+        <option value="elu">ELU</option>
+        <option value="leaky_relu">LeakyReLU</option>
+      </select>
+    </label>
+    <label class="field">
+      <div class="label">BatchNorm</div>
+      <input id="dl-mlp-bn" type="checkbox" checked />
+    </label>
+  </div>
+
+  <!-- Attention panel -->
+  <div id="dl-panel-att" class="grid cols-2" style="display:none">
+    <label class="field"><div class="label">d_model</div><input id="dl-att-dmodel" type="number" value="128" /></label>
+    <label class="field"><div class="label">n_heads</div><input id="dl-att-heads" type="number" value="4" /></label>
+    <label class="field"><div class="label">n_layers</div><input id="dl-att-layers" type="number" value="2" /></label>
+    <label class="field"><div class="label">ff_multiplier</div><input id="dl-att-ff" type="number" value="4" /></label>
+    <label class="field"><div class="label">dropout</div><input id="dl-att-dropout" type="number" step="0.05" value="0.1" /></label>
+  </div>
+
+  <h3>Training params</h3>
+  <div class="grid cols-2">
+    <label class="field"><div class="label">Learning rate</div><input id="dl-tr-lr" type="number" step="0.0001" value="0.001" /></label>
+    <label class="field"><div class="label">Weight decay</div><input id="dl-tr-wd" type="number" step="0.00001" value="0.0001" /></label>
+    <label class="field"><div class="label">Batch size</div><input id="dl-tr-bs" type="number" value="64" /></label>
+    <label class="field"><div class="label">Epochs</div><input id="dl-tr-epochs" type="number" value="20" /></label>
+  </div>
+
+  <div class="actions">
+
+    <button id="btn-dl-train" type="button" class="btn"
+      style="font-size:16px;font-weight:700;background:#fff;color:#111827;border:2px solid #e5e7eb;padding:8px 16px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.15);">
+      Run DL
+    </button>
+
+    <span id="dl-status" class="muted"></span>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="progress" id="dl-progressbar">
+    <div id="dl-progress" class="bar" style="width:0%"></div>
+  </div>
+
+  <!-- Part 3 chart placeholder (shows even before running) -->
+<div class="card" id="dl-chart-card-p3" style="margin-top:14px;padding:8px 10px 10px 10px">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+    <div style="font-weight:600">ACC vs F1-macro</div>
+  </div>
+  <!-- JS will draw here after training -->
+  <div id="dl-chart-scatter" style="height:360px"></div>
+</div>
+
+<!-- Part 3 results (summary + table will render here) -->
+<div id="dl-output" style="margin-top:12px"></div>
+
+
+
+
+</section>
+
+  <!-- ============== Part 4 · Consensus Biomarkers ============== -->
+  <section id="part4" class="section" style="margin-top:20px">
+  <h2>Part 4 · Consensus Biomarkers</h2>
+
+  <div class="card" style="padding:10px 12px">
+    <div style="display:flex; gap:8px; align-items:center; flex-wrap: wrap;">
+      <input id="p4-file" type="file" accept=".csv" multiple class="p4-file-hidden">
+      <label for="p4-file" id="p4-file-label" class="btn">Choose files</label>
+      <span id="p4-file-hint" class="muted">No files selected</span>
+      <div class="muted">Upload ≥ 2 biomarker CSVs (columns like: rank, feature/ensembl_gene_id, gene, score)</div>
+    </div>
+
+    <div style="display:flex; gap:12px; margin-top:8px; flex-wrap:wrap;">
+      <label>Top-k
+        <input id="p4-topk" type="number" min="1" max="1000" value="50" style="width:80px">
+      </label>
+
+      <label>Consensus method
+        <select id="p4-method">
+          <option value="intersect">Strict intersection</option>
+          <option value="freq">Frequency ≥ m</option>
+          <option value="avg_rank" selected>Average rank</option>
+          <option value="avg_z">Average z-score</option>
+        </select>
+      </label>
+
+      <label id="p4-m-wrap">m
+        <input id="p4-m" type="number" min="1" value="2" style="width:70px">
+      </label>
+
+      <button id="p4-run" type="button" class="btn"
+      style="font-size:16px;font-weight:700;background:#fff;color:#111827;border:2px solid #e5e7eb;padding:8px 16px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.15);">
+      Compute consensus
+      </button>
+
+      <span id="p4-status" class="muted"></span>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:10px; padding:8px 10px 10px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+      <div style="font-weight:600">Consensus summary</div>
+      <div id="p4-downloads"></div>
+    </div>
+    <div id="p4-summary"></div>
+    <div id="p4-chart" style="height:260px; margin-top:8px;"></div>
+  </div>
+
+  <div id="p4-table" style="margin-top:12px;"></div>
+</section>
+
+
+  </main>
+
+  <!-- 更新缓存版本号 -->
+  <script src="./script.js?v=20251008" defer></script>
+</body>
+</html>
+
