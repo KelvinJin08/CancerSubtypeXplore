@@ -341,10 +341,10 @@ class _MLPCfg(_BaseCfg):
 
 class _AttCfg(_BaseCfg):
     kind: Literal["attention"]
-    d_model: int = 128
-    n_heads: int = 4
+    d_model: int = 32
+    n_heads: int = 2
     n_layers: int = 2
-    ff_multiplier: int = 4
+    ff_multiplier: int = 2
     dropout: float = 0.1
     max_len: Optional[int] = None
 
@@ -353,8 +353,8 @@ AnyCfg = Union[_LinearCfg, _MLPCfg, _AttCfg]
 class _TrainCfgDL(BaseModel):
     lr: float = 1e-3
     weight_decay: float = 1e-4
-    batch_size: int = 64
-    epochs: int = 20
+    batch_size: int = 32
+    epochs: int = 200
     balanced: bool = True
     standardize: bool = True   # 默认做特征标准化（对齐 baseline）
 

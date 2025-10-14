@@ -84,7 +84,7 @@ class SimpleMLP(nn.Module):
 
 # ========== 3) Attention (lightweight) ==========
 class TransformerBlock(nn.Module):
-    def __init__(self, d_model: int, n_heads: int, ff_mult: int = 4, dropout: float = 0.1):
+    def __init__(self, d_model: int, n_heads: int, ff_mult: int = 2, dropout: float = 0.1):
         super().__init__()
         self.attn = nn.MultiheadAttention(d_model, n_heads, dropout=dropout, batch_first=True)
         self.ln1 = nn.LayerNorm(d_model)
@@ -114,10 +114,10 @@ class AttentionNet(nn.Module):
         self,
         input_dim: int,
         num_classes: int,
-        d_model: int = 128,
-        n_heads: int = 4,
+        d_model: int = 32,
+        n_heads: int = 2,
         n_layers: int = 2,
-        ff_multiplier: int = 4,
+        ff_multiplier: int = 2,
         dropout: float = 0.1,
         max_len: Optional[int] = None,
     ):
