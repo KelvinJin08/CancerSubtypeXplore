@@ -10,8 +10,8 @@ It integrates standardized TCGA datasets with both classical and deep learning m
 The system is composed of four functional modules:
 
 1. **Dataset Module** – Curated and standardized TCGA multi-omics datasets (mRNA, DNA methylation, miRNA) across 17 cancer types.  
-2. **Machine Learning Module** – Automated benchmarking using classical classifiers (SVM, Random Forest, XGBoost, etc.).  
-3. **DIY Deep Learning Module** – Interactive interface for designing and training custom neural networks without coding.  
+2. **Machine Learning Module** – Automated benchmarking using classical classifiers (SVM, Random Forest, etc.).  
+3. **Disign Your Deep Learning Module** – Interactive interface for designing and training custom neural networks without coding.  
 4. **Biomarker Analysis Module** – Extraction and cross-model comparison of top-ranked biomarkers to identify robust pan-cancer signatures.  
 
 
@@ -53,7 +53,7 @@ CancerSubtypeXplore/
 ### 1️⃣ Install dependencies
 ```bash
 pip install -r requirements.txt
-pip install torch --index-url https://download.pytorch.org/whl/cpu
+pip install torch --index-url https://download.pytorch.org/whl/cpu             # You can also download the GPU version that matches your computer
 ```
 
 ### 2️⃣ Launch the FastAPI backend
