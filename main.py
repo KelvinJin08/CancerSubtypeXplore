@@ -113,7 +113,7 @@ def list_datasets():
 
 # —— 新增接口：按根目录获取项目列表 ——
 @app.get("/projects")
-def get_projects(root: str = Query(..., description="dataset root key: val | pretrain")):
+def get_projects(root: str = Query(..., description="dataset root key: independent | cross_cancer")):
     try:
         return {"root": root, "projects": list_projects_by_root(root)}
     except HTTPException as e:

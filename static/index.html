@@ -190,10 +190,10 @@
 
   <!-- Attention panel -->
   <div id="dl-panel-att" class="grid cols-2" style="display:none">
-    <label class="field"><div class="label">d_model</div><input id="dl-att-dmodel" type="number" value="128" /></label>
-    <label class="field"><div class="label">n_heads</div><input id="dl-att-heads" type="number" value="4" /></label>
+    <label class="field"><div class="label">d_model</div><input id="dl-att-dmodel" type="number" value="32" /></label>
+    <label class="field"><div class="label">n_heads</div><input id="dl-att-heads" type="number" value="2" /></label>
     <label class="field"><div class="label">n_layers</div><input id="dl-att-layers" type="number" value="2" /></label>
-    <label class="field"><div class="label">ff_multiplier</div><input id="dl-att-ff" type="number" value="4" /></label>
+    <label class="field"><div class="label">ff_multiplier</div><input id="dl-att-ff" type="number" value="2" /></label>
     <label class="field"><div class="label">dropout</div><input id="dl-att-dropout" type="number" step="0.05" value="0.1" /></label>
   </div>
 
@@ -202,7 +202,7 @@
     <label class="field"><div class="label">Learning rate</div><input id="dl-tr-lr" type="number" step="0.0001" value="0.001" /></label>
     <label class="field"><div class="label">Weight decay</div><input id="dl-tr-wd" type="number" step="0.00001" value="0.0001" /></label>
     <label class="field"><div class="label">Batch size</div><input id="dl-tr-bs" type="number" value="64" /></label>
-    <label class="field"><div class="label">Epochs</div><input id="dl-tr-epochs" type="number" value="20" /></label>
+    <label class="field"><div class="label">Epochs</div><input id="dl-tr-epochs" type="number" value="200" /></label>
   </div>
 
   <div class="actions">
@@ -292,7 +292,7 @@
   </main>
 
   <!-- 更新缓存版本号 -->
-  <script src="./script.js?v=20251008" defer></script>
+  <script src="./script.js?v=20251015" defer></script>
 </body>
 </html>
 

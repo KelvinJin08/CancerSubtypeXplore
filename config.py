@@ -1,8 +1,8 @@
 from pathlib import Path
 
 DATASET_ROOTS = {
-    "val": Path("./data/independent"),
-    "pretrain": Path("./data/cross_cancer"),
+    "independent": Path("./data/independent"),
+    "cross_cancer": Path("./data/cross_cancer"),
 }
 
 DEFAULT_PROJECTS_VAL = [
