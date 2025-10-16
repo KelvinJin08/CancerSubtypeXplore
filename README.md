@@ -18,6 +18,8 @@ The system is composed of four functional modules:
 
 ## 📊 System Architecture
 
+<img width="416" height="272" alt="image" src="https://github.com/user-attachments/assets/d70bfd75-d95c-41cb-a29c-f87daac15298" />
+
 
 **Figure:** Overview of the CancerSubtypeXplore framework.  
 The platform integrates standardized multi-omics datasets, machine learning benchmarking, customizable deep learning, and cross-model biomarker analysis.
@@ -29,8 +31,8 @@ The platform integrates standardized multi-omics datasets, machine learning benc
 ```
 CancerSubtypeXplore/
 ├── data/
-│   ├── dataset_for_pretrain/        # Multi-omics datasets for model pretraining (TCGA projects)
-│   └── dataset_for_val_ML/          # Datasets for classical ML model benchmarking
+│   ├── independent/        # 10 independent TCGA datasets
+│   └── cross_cancer/          # 7 cross-cancer TCGA datasets
 │
 ├── static/                          # Frontend static assets served by FastAPI
 │   ├── index.html                   # Web interface for CancerSubtypeXplore
@@ -61,4 +63,12 @@ pip install torch --index-url https://download.pytorch.org/whl/cpu             #
 uvicorn main:app --reload
 ```
 Then open http://127.0.0.1:8000 to explore the API.
+
+## 🌐 Web Tool Preview
+
+<img width="832" height="990" alt="image" src="https://github.com/user-attachments/assets/e1cd16df-8127-44d0-baab-7d835a45c599" />
+<img width="832" height="1010" alt="image" src="https://github.com/user-attachments/assets/f9b2572b-c698-45f5-a526-becc697ad201" />
+
+
+
 
