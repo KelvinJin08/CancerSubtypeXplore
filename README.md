@@ -18,11 +18,11 @@ The system is composed of four functional modules:
 
 ## 📊 System Architecture
 
-<img width="416" height="272" alt="image" src="https://github.com/user-attachments/assets/d70bfd75-d95c-41cb-a29c-f87daac15298" />
+<img width="832" height="544" alt="image" src="https://github.com/user-attachments/assets/d70bfd75-d95c-41cb-a29c-f87daac15298" />
 
 
-**Figure:** Overview of the CancerSubtypeXplore framework.  
-The platform integrates standardized multi-omics datasets, machine learning benchmarking, customizable deep learning, and cross-model biomarker analysis.
+**Figure:** Overview of the CancerSubtypeXplore workflow
+**a. Dataset preprocessing** – Curated TCGA multi-omics datasets (mRNA, DNA-methylation, miRNA) are presented after prior download, filtering, and normalization, ensuring consistent feature dimensions across projects. **b. Machine-learning baseline** – Classical algorithms (e.g., Logistic Regression, SVM, Random Forest) are benchmarked to establish baseline performance across cancers. **c. Deep-learning model design** – Users can interactively define or customize neural architectures without coding to explore model configurations beyond ML baselines. **d. Cross-model and cross-cancer biomarker discovery** – Contribution-based feature-ranking and frequency aggregation identify stable biomarkers reproducibly highlighted by multiple deep-learning models.
 
 
 
