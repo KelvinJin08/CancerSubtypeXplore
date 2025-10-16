@@ -16,7 +16,7 @@ The system is composed of four functional modules:
 
 
 
-## 📊 System Architecture
+## 🪢  Workflow
 
 <img width="832" height="544" alt="image" src="https://github.com/user-attachments/assets/d70bfd75-d95c-41cb-a29c-f87daac15298" />
 
@@ -64,7 +64,7 @@ uvicorn main:app --reload
 ```
 Then open http://127.0.0.1:8000 to explore the API.
 
-## 🌐 Web Tool Preview
+## 🖥️ Web Tool Preview
 
 <img width="832" height="990" alt="image" src="https://github.com/user-attachments/assets/e1cd16df-8127-44d0-baab-7d835a45c599" />
 <img width="832" height="1010" alt="image" src="https://github.com/user-attachments/assets/f9b2572b-c698-45f5-a526-becc697ad201" />
